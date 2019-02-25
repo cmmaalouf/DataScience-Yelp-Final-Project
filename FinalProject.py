@@ -16,7 +16,6 @@
 # ## Who has better Food DC or Baltimore?
 
 
-# In[41]:
 
 
 import requests
@@ -33,7 +32,6 @@ import statistics
 
 # ### Method: Request 1000 restaurants from each city
 
-# In[57]:
 
 
 # paramters for request
@@ -44,14 +42,14 @@ balti_params = {"location":"Baltimore","categories":"restaurants, All","limit":5
 dc_params = {"location":"Washington D.C.","categories":"restaurants, All","limit":50}
 
 
-# In[43]:
+
 
 
 # URL for the business search endpoint
 url ="https://api.yelp.com/v3/businesses/search"
 
 
-# In[58]:
+
 
 
 # gets first 50 data points for baltimore restaurants
@@ -62,7 +60,7 @@ yelp_dc_restaurants = requests.get(url, headers={"Authorization":"Bearer "+YELPk
  
 
 
-# In[94]:
+
 
 
 # makes first dataframe of the first 50 yelp results for Baltimore and DC
@@ -71,7 +69,7 @@ balti_restaurants1 = pd.DataFrame(yelp_balti_restaurants.json()['businesses'])
 dc_restaurants1 = pd.DataFrame(yelp_dc_restaurants.json()['businesses'])
 
 
-# In[96]:
+
 
 
 index = 51
@@ -117,13 +115,13 @@ print(balti_restaurants['id'].count())
 print(dc_restaurants['id'].count())
 
 
-# In[99]:
+
 
 
 print(balti_restaurants.describe())
 
 
-# In[100]:
+
 
 
 print(dc_restaurants.describe())
@@ -131,7 +129,7 @@ print(dc_restaurants.describe())
 
 # # Are DC restuarant ratings significantly better than restuarant ratings in Baltimore?
 
-# In[106]:
+
 
 
 balti_ratings = balti_restaurants['rating']
@@ -141,7 +139,7 @@ sub_balti_ratings_means = []
 sub_dc_ratings_means = []
 
 
-# In[434]:
+
 
 
 # Inferential Stats Mathy Way
@@ -175,7 +173,7 @@ outlier_lowerbound_dc = mean_dc_rating - 2*stddev_dc_rating
 DAYS = 365
 for i in range(1000):
     
-    # 2015
+    
     if(balti_ratings[i]< outlier_lowerbound_balti):
         outlier_count_balti +=1
     elif(balti_ratings[i]> outlier_upperbound_balti):
@@ -183,7 +181,7 @@ for i in range(1000):
     else:
         without_outliers_balti.append(balti_ratings[i])
         
-    # 2017
+    
     if(dc_ratings[i]< outlier_lowerbound_dc):
         outlier_count_dc +=1
     elif(dc_ratings[i]> outlier_upperbound_dc):
@@ -200,7 +198,7 @@ mean_without_outliers_dc = statistics.mean(without_outliers_dc)
 
 # ### Discovering Outliers
 
-# In[437]:
+
 
 
 print("Baltimore: mean Restaurant ratings without outliers",mean_without_outliers_balti,sep=" : ")
@@ -212,7 +210,7 @@ print("Number of outliers in dc ratings", outlier_count_dc,sep=" : ")
 
 # ### Inferential Statistics : Boot Strapping Confidence Intervals
 
-# In[448]:
+
 
 
 #Inferential Stats
@@ -240,7 +238,7 @@ for i in range(10000):
     sub_dc_ratings_means.append(statistics.mean(subsample_dc_ratings))
 
 
-# In[450]:
+
 
 
 boot_mean_rating_balti = 0
@@ -275,7 +273,7 @@ boot_CI_rating_balti = [sub_balti_ratings_means[251], sub_balti_ratings_means[ni
 boot_CI_rating_dc = [sub_dc_ratings_means[251], sub_dc_ratings_means[ninedyseven_five_perc]]
 
 
-# In[451]:
+
 
 
 print(" CI Baltimore Avg Restuarant Rating")
@@ -291,7 +289,7 @@ print("mean DC Rating = "+str(boot_mean_rating_dc))
 
 # #### DC Restaurants have significantly higher average ratings than restaurants in Baltimore
 
-# In[140]:
+
 
 
 # Inferential Statistics pvalue hypothesis
@@ -326,7 +324,7 @@ for i in range(10000):
     #test_universe_17_means.append(statistics.mean(shuffled_17_stat_pool))
 
 
-# In[457]:
+
 
 
 p=0
@@ -345,7 +343,7 @@ def p_value(stat_pool, norm_stat):
         
 
 
-# In[458]:
+
 
 
 # gets p-value for null hypothesis
@@ -358,7 +356,7 @@ print(p)
 # 
 # I am 99% certain that the average DC restaurant ratings  are significantly better than the average Baltimore restaurant ratings
 
-# In[407]:
+
 
 
 lat = []
@@ -370,19 +368,19 @@ for i in range(all_bmore_info.shape[0]):
                         
 
 
-# In[408]:
+
 
 
 Latitude = pd.Series(v  for v in lat) 
 
 
-# In[409]:
+
 
 
 Longitude = pd.Series(v  for v in long) 
 
 
-# In[459]:
+
 
 
 # all_bmore_info.dropna(subset=['coordinates.latitude', 'coordinates.longitude'])
@@ -395,7 +393,7 @@ Longitude = pd.Series(v  for v in long)
 # plt.legend= "true";
 
 
-# In[143]:
+
 
 
 import sklearn
@@ -407,7 +405,7 @@ import random
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[260]:
+
 
 
 import json
@@ -422,7 +420,7 @@ more_info_url ="https://api.yelp.com/v3/businesses/"
 
 # ## For every Baltimore restuarant available to me, I looked up their business info using the business info endpoint.
 
-# In[255]:
+
 
 
 # all 1000 id's of baltimore restaurants
@@ -438,13 +436,13 @@ for i in range(ids.count()):
     
 
 
-# In[381]:
+
 
 
 all_bmore_info = pd.concat(business_info, ignore_index=True)
 
 
-# In[414]:
+
 
 
 import matplotlib.pyplot as plt
@@ -455,19 +453,19 @@ import matplotlib.pyplot as plt
 #plt.legend= "true";
 
 
-# In[460]:
+
 
 
 print(all_bmore_info.corr())
 
 
-# In[ ]:
 
 
 
 
 
-# In[ ]:
+
+
 
 
 
@@ -475,7 +473,7 @@ print(all_bmore_info.corr())
 
 # #### Starts Creating sets for Logistics Regression
 
-# In[417]:
+
 
 
 train_set = pd.DataFrame()
@@ -497,7 +495,7 @@ print(test_set.shape[0])
 
 # #### Created a  Binary Column if the Restaurant is Claimed or not
 
-# In[430]:
+
 
 
 #test_binary = pd.Series()
@@ -513,7 +511,7 @@ test_binary = test_set["Binary_Claimed"].tolist()
 train_binary = train_set["Binary_Claimed"].tolist()
 
 
-# In[461]:
+
 
 
 logistic_model=0
@@ -529,7 +527,6 @@ log_coeff = logistic_model.coef_
 log_intercept = logistic_model.intercept_
 
 
-# In[ ]:
 
 
 print(log_coeff)
@@ -540,7 +537,7 @@ print(log_intercept)
 
 # is_claimed = -0.00703223*review_count -1.12585481
 
-# In[462]:
+
 
 
 y_prime = logistic_model.predict(feature_test)
@@ -552,7 +549,7 @@ print("\tRecall: ", sklearn.metrics.recall_score(outstanding_test,y_prime))
 print("\tF1: ", sklearn.metrics.f1_score(outstanding_test,y_prime))
 
 
-# In[466]:
+
 
 
 import sklearn.dummy
@@ -579,7 +576,7 @@ mcommon_prime = mcommon_logistic_model.predict(feature_test)
 
 
 
-# In[464]:
+
 
 
 print("Random Scores: ")
@@ -589,7 +586,7 @@ print("\tRecall: ", sklearn.metrics.recall_score(outstanding_test,random_prime))
 print("\tF1: ", sklearn.metrics.f1_score(outstanding_test,random_prime))
 
 
-# In[465]:
+
 
 
 print("Most Common Scores: ")
@@ -599,7 +596,7 @@ print("\tRecall: ", sklearn.metrics.recall_score(outstanding_test,mcommon_prime)
 print("\tF1: ", sklearn.metrics.f1_score(outstanding_test,mcommon_prime))
 
 
-# In[ ]:
+
 
 
 
@@ -613,7 +610,7 @@ print("\tF1: ", sklearn.metrics.f1_score(outstanding_test,mcommon_prime))
 
 # ### To clean the data I created a new colllumn that quantified the price on  a scale of 1-4
 
-# In[383]:
+
 
 
 # cleaning data
@@ -621,7 +618,7 @@ all_bmore_info.dropna(subset=['price'], inplace=True)
 print(all_bmore_info['price'].count())
 
 
-# In[384]:
+
 
 
 all_bmore_info['Numerical_1'] = all_bmore_info["price"].apply(lambda x:1 if x=='$' else 0)
@@ -630,19 +627,18 @@ all_bmore_info['Numerical_3'] = all_bmore_info["price"].apply(lambda x:3 if x=='
 all_bmore_info['Numerical_4'] = all_bmore_info["price"].apply(lambda x:4 if x=='$$$$' else 0)
 
 
-# In[385]:
+
 
 
 all_bmore_info['Numerical_Price'] = all_bmore_info['Numerical_1'] + all_bmore_info['Numerical_2']+ all_bmore_info['Numerical_3'] + all_bmore_info['Numerical_4']
 
 
-# In[386]:
 
 
 all_bmore_info.corr()
 
 
-# In[343]:
+
 
 
 categories = []
@@ -652,20 +648,19 @@ for i in range(all_bmore_info['categories'].count()):
 categories_series = pd.Series(v  for v in categories) 
 
 
-# In[387]:
+
 
 
 #print(categories_series)
 
 
-# In[264]:
 
 
 row_count = all_bmore_info.shape[0]
 shuffled_restaurants = all_bmore_info.sample(n=row_count)
 
 
-# In[375]:
+
 
 
 scaled_restaurants = 0
@@ -676,7 +671,7 @@ scaleData = pd.DataFrame(sklearn.preprocessing.MinMaxScaler().fit_transform(clus
 scaleData.dropna;
 
 
-# In[376]:
+
 
 
 clusters = sklearn.cluster.KMeans().fit(scaleData)
@@ -688,14 +683,14 @@ for num in range(1,21):
 matplotlib.pyplot.plot(numclusters);
 
 
-# In[377]:
+
 
 
 all_bmore_info['cluster_num'] = pd.Series(range(len(all_bmore_info)))
 cluster_data['labels'] = sklearn.cluster.KMeans(n_clusters=5).fit(scaleData).labels_
 
 
-# In[380]:
+
 
 
 cluster_data.groupby('labels').mean()
@@ -711,7 +706,7 @@ cluster_data.groupby('labels').mean()
 # 
 # 
 
-# In[370]:
+
 
 
 #print(cluster_data)
@@ -723,32 +718,32 @@ cluster_data[cluster_data.labels == 0].describe()
 cluster_data[cluster_data.labels == 1].describe()
 
 
-# In[372]:
+
 
 
 cluster_data[cluster_data.labels == 2].describe()
 
 
-# In[373]:
+
 
 
 cluster_data[cluster_data.labels == 3].describe()
 
 
-# In[467]:
+
 
 
 cluster_data[cluster_data.labels == 4].describe()
 
 
-# In[472]:
+
 
 
 cluster_data.plot.scatter('rating','Numerical_Price',c='labels',cmap='rainbow',title='Price by Rating', colorbar=False);
 #cluster_data.plot.scatter('review_count','Numerical_Price',c='labels',cmap='rainbow',title='Price by Review count', colorbar=False);
 
 
-# In[442]:
+
 
 
 # Graphing ratings og baltimore restaurants
