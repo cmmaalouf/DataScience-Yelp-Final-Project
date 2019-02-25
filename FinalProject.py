@@ -719,13 +719,6 @@ cluster_data[cluster_data.labels == 0].describe()
 #print(all_bmore_info['alias'])
 
 
-# # Conclusions
-# ## YELP API = not so good for data science
-# ## Numerical data limited
-# ## DC restaurants > Baltimore
-
-# In[371]:
-
 
 cluster_data[cluster_data.labels == 1].describe()
 
